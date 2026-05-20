@@ -15,24 +15,21 @@ class AuthService
         $this->repo = new UserRepository();
     }
 
-    public function login(string $email, string $password): bool
+        public function login(string $email, string $password)
     {
-          if(empty($email) || empty($password)) {
-              throw new \Exception("All fields are required");
-          }
-         $user = $this->repo->findByEmail($email);
+        $user = $this->repo->findByEmail($email);
 
         if (!$user) {
-            return false;
+            return null;
         }
 
-        if (!password_verify($password, $user['password'])) {
-            return false;
+        if (password_verify($password, $user['password'])) {
+            return $user;
         }
 
-        $_SESSION['user'] = $user;
-
-        return true;
+        return null;
     }
+
+
 
 }
