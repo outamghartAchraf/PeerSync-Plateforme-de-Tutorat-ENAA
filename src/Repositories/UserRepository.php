@@ -12,7 +12,7 @@ class UserRepository
         $this->pdo = \DB::connect();
     }
 
-    public function findByEmail(string $email): ?array
+    public function findByEmail(string $email)
     {
         $stmt = $this->pdo->prepare("SELECT *
             FROM users
