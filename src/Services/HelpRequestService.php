@@ -53,6 +53,6 @@ class HelpRequestService
 
     public function getRequests(array $filters): array
     {
-        return $this->repository->getRequests($filters);
+        return $this->repo->getRequests($filters);
     }
 }
