@@ -58,6 +58,20 @@ class UserRepository
         return $stmt->fetchAll(\PDO::FETCH_OBJ);
     }
 
+    public function addPoints($userId, $points)
+    {
+        $sql = "UPDATE users 
+            SET points = points + ?
+            WHERE id = ?";
+
+        $stmt = $this->pdo->prepare($sql);
+
+        $stmt->execute([
+            $points,
+            $userId
+        ]);
+    }
+
   
 
 }
