@@ -1,9 +1,11 @@
 <?php
 
 namespace Src\Repositories;
+
 require_once __DIR__ . "/../../config/DB.php";
+
 use PDO;
-include_once __DIR__ . "/../Entities/HelpRequest.php";
+use Src\Entities\HelpRequest;  
 
 class HelpRequestRepository
 {
@@ -11,7 +13,7 @@ class HelpRequestRepository
 
     public function __construct()
     {
-        $this->pdo =  \DB::connect();
+        $this->pdo = \DB::connect();
     }
 
     public function countAll(): int
