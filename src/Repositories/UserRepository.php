@@ -3,6 +3,7 @@
 namespace Src\Repositories;
 require_once __DIR__ . "/../../config/DB.php";
 use PDO;
+ 
 
 class UserRepository
 {
@@ -13,7 +14,7 @@ class UserRepository
         $this->pdo = \DB::connect();
     }
 
-    public function findByEmail(string $email): ?array
+    public function findByEmail(string $email): ?object
     {
         $stmt = $this->pdo->prepare("SELECT users.*, roles.label AS role_name
         FROM users
@@ -21,12 +22,12 @@ class UserRepository
         WHERE users.email = ?
     ");        $stmt->execute([$email]);
 
-        $user = $stmt->fetch(\PDO::FETCH_ASSOC);
+        $user = $stmt->fetch(\PDO::FETCH_OBJ);
 
         return $user ?: null;
     }
 
-    public function findById(int $id): ?array
+    public function findById(int $id): ?object
     {
         $stmt = $this->pdo->prepare("SELECT users.*, roles.label AS role_name
         FROM users
@@ -34,9 +35,9 @@ class UserRepository
         WHERE users.id = ?");
         $stmt->execute([$id]);
 
-        $user = $stmt->fetch(\PDO::FETCH_ASSOC);
+        $user = $stmt->fetch(\PDO::FETCH_OBJ);
 
-        return $user ?: null;
+        return $user ;
     }
 
     public function incrementPoints(int $userId, int $points): bool
@@ -54,7 +55,9 @@ class UserRepository
         ORDER BY users.name ASC");
         $stmt->execute([$roleLabel]);
 
-        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        return $stmt->fetchAll(\PDO::FETCH_OBJ);
     }
+
+  
 
 }

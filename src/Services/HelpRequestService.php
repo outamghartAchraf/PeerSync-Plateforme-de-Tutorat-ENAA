@@ -25,7 +25,10 @@ class HelpRequestService
         return $this->repo->countByStatus('pending');
     }
 
-
+    public function countResolved(): int
+    {
+        return $this->repo->countByStatus('resolved');
+    }
 
 
 }

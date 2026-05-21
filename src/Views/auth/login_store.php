@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     if ($user) {
         $_SESSION["user"] = $user;
-        $roleName = strtolower(trim((string) ($user["role_name"] ?? '')));
+        $roleName = strtolower(trim((string) ($user->role_name ?? '')));
         if ($roleName === "student") {
             header("Location: ../student/dashboard.php");
         } else {

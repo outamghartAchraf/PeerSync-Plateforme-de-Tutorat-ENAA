@@ -12,7 +12,7 @@ require_once __DIR__ . '/../../Services/HelpRequestService.php';
 
 use Src\Services\HelpRequestService;
 
-$user = $_SESSION['user'];
+$user = is_object($_SESSION['user']) ? $_SESSION['user'] : (object) $_SESSION['user'];
 
 $helpService = new HelpRequestService();
 
@@ -152,7 +152,7 @@ $resolvedRequests = $helpService->countResolved();
 
                 <h2 class="font-bold mt-1">
 
-                    <?= htmlspecialchars($user['name']) ?>
+                    <?= htmlspecialchars($user->name) ?>
 
                 </h2>
 
@@ -193,7 +193,7 @@ $resolvedRequests = $helpService->countResolved();
                 <!-- USER AVATAR -->
                 <div class="w-12 h-12 rounded-full bg-gradient-to-r from-cyan-500 to-blue-600 flex items-center justify-center font-bold text-lg">
 
-                    <?= strtoupper(substr($user['name'], 0, 1)) ?>
+                    <?= strtoupper(substr($user->name, 0, 1)) ?>
 
                 </div>
 
@@ -217,7 +217,7 @@ $resolvedRequests = $helpService->countResolved();
 
                         <h2 class="text-4xl font-bold mt-2 text-cyan-400">
 
-                            <?= $user['points'] ?? 0 ?>
+                            <?= $user->points  ?>
 
                         </h2>
 

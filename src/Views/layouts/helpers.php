@@ -37,24 +37,39 @@ if (!function_exists('ps_url')) {
 }
 
 if (!function_exists('ps_user')) {
-    function ps_user(): array
+    function ps_user()
     {
-        return isset($_SESSION['user']) && is_array($_SESSION['user']) ? $_SESSION['user'] : [];
+        if (!isset($_SESSION['user'])) {
+            return [];
+        }
+
+        // Keep legacy array sessions readable while the app migrates to objects.
+        if (is_array($_SESSION['user']) || is_object($_SESSION['user'])) {
+            return $_SESSION['user'];
+        }
+
+        return [];
     }
 }
 
 if (!function_exists('ps_role_label')) {
-    function ps_role_label(?array $user = null): string
+    function ps_role_label($user = null): string
     {
         $user = $user ?? ps_user();
-        $role = strtolower(trim((string) ($user['role_name'] ?? $user['role'] ?? 'student')));
+        if (is_object($user)) {
+            $role = strtolower(trim((string) ($user->role_name ?? $user->role ?? 'student')));
+        } elseif (is_array($user)) {
+            $role = strtolower(trim((string) ($user['role_name'] ?? $user['role'] ?? 'student')));
+        } else {
+            $role = 'student';
+        }
 
         return in_array($role, ['admin', 'tutor', 'teacher'], true) ? 'Tutor' : 'Student';
     }
 }
 
 if (!function_exists('ps_role_slug')) {
-    function ps_role_slug(?array $user = null): string
+    function ps_role_slug($user = null): string
     {
         return strtolower(ps_role_label($user));
     }

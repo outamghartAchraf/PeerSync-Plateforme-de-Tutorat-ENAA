@@ -6,7 +6,7 @@ require_once __DIR__ . '/helpers.php';
 
 $user = ps_user();
 $roleLabel = ps_role_label($user);
-$userName = (string) ($user['name'] ?? 'PeerSync User');
+$userName = (string) ((is_object($user) ? ($user->name ?? null) : ($user['name'] ?? null)) ?? 'PeerSync User');
 ?>
 
 

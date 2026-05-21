@@ -3,6 +3,7 @@
 namespace Src\Repositories;
 require_once __DIR__ . "/../../config/DB.php";
 use PDO;
+include_once __DIR__ . "/../Entities/HelpRequest.php";
 
 class HelpRequestRepository
 {
@@ -29,5 +30,22 @@ class HelpRequestRepository
         ]);
 
         return (int) $stmt->fetchColumn();
+    }
+
+    public function create(HelpRequest $helpRequest): bool
+    {
+        $sql = "INSERT INTO help_request
+            (title, description, technology, status, student_id)
+            VALUES (?, ?, ?, ?, ?)";
+
+        $stmt = $this->pdo->prepare($sql);
+
+        return $stmt->execute([
+            $helpRequest->getTitle(),
+            $helpRequest->getDescription(),
+            $helpRequest->getTechnology(),
+            $helpRequest->getStatus(),
+            $helpRequest->getStudentId()
+        ]);
     }
 }

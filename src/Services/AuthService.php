@@ -23,8 +23,8 @@ class AuthService
             return null;
         }
 
-        if (password_verify($password, $user['password'])) {
-            $user['role'] = $user['role'] ?? ($user['role_name'] === 'admin' ? 'Tutor' : 'Student');
+            if (password_verify($password, $user->password)) {
+                $user->role = $user->role ?? ($user->role_name === 'admin' ? 'Tutor' : 'Student');
             return $user;
         }
 
