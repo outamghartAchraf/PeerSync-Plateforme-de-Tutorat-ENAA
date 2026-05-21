@@ -261,7 +261,7 @@ $helperName =
                         <a href="resolve.php?id=<?= $requestIdValue ?>"
                            class="inline-flex w-full items-center justify-center rounded-2xl bg-emerald-400 px-4 py-3 font-semibold text-slate-950 transition hover:-translate-y-0.5 hover:bg-emerald-300">
 
-                            Mark as Resolved ✅
+                            Mark as Resolved
 
                         </a>
 

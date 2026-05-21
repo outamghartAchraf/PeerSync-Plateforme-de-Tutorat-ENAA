@@ -126,4 +126,25 @@ class HelpRequestRepository
 
         return $result ? HelpRequest::fromRow($result) : null;
     }
+
+    public function assignRequest($requestId, $helperId)
+{
+    $sql = "UPDATE help_request 
+            SET tutor_id = ?, status = ?
+            WHERE id = ? 
+            AND status = ?
+            AND student_id != ?";
+
+    $stmt = $this->db->prepare($sql);
+
+    $stmt->execute([
+        $helperId,
+        'assigned',
+        $requestId,
+        'pending',
+        $helperId
+    ]);
+
+    return $stmt->rowCount() > 0;
+}
 }
