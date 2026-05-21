@@ -60,4 +60,36 @@ class HelpRequestService
     {
         return $this->repo->findById($id);
     }
+
+    public function assignRequest($requestId, $userId, $creatorId)
+{
+     
+    if ($userId == $creatorId) {
+       
+         throw new \Exception("You cannot assign your own request");
+    }
+
+   
+    $request = $this->repo->findById($requestId);
+
+    
+    if (!$request) {
+         throw new \Exception("Request not found");
+    }
+
+     
+    if ($request->status != 'PENDING') {
+        throw new \Exception("Request already assigned");
+    }
+
+    
+    $assigned = $this->repo->assignRequest($requestId, $userId);
+
+   
+    if (!$assigned) {
+        throw new \Exception("Assign failed");
+    }
+
+    return true;
+}
 }

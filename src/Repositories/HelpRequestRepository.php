@@ -135,7 +135,7 @@ class HelpRequestRepository
             AND status = ?
             AND student_id != ?";
 
-    $stmt = $this->db->prepare($sql);
+    $stmt = $this->pdo->prepare($sql);
 
     $stmt->execute([
         $helperId,
