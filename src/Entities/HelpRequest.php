@@ -8,7 +8,7 @@ use Exception;
 
 class HelpRequest
 {
-   
+    private int $id;
     private string $title;
 
     private string $description;
@@ -30,7 +30,7 @@ class HelpRequest
     private ?string $helperEmail;
 
     public function __construct(
-     
+        int $id = null,
         string $title,
         string $description,
         string $technology,
@@ -45,7 +45,7 @@ class HelpRequest
         ?string $helperEmail = null
     ) {
 
-        
+        $this->id = $id;
         $this->title = $title;
         $this->description = $description;
         $this->technology = $technology;
@@ -63,7 +63,7 @@ class HelpRequest
     public static function fromRow(object $row): self
     {
         return new self(
-            
+            isset($row->id) ? (int) $row->id : 0,
             (string) ($row->title ?? ''),
             (string) ($row->description ?? ''),
             (string) ($row->technology ?? ''),
@@ -83,6 +83,7 @@ class HelpRequest
     {
         return match ($name) {
            
+            'id' => $this->id,
             'title' => $this->title,
             'description' => $this->description,
             'technology' => $this->technology,
@@ -142,6 +143,10 @@ class HelpRequest
         $this->resolvedAt = date('Y-m-d H:i:s');
     }
 
+    public function getId() : int
+    {
+        return $this->id;
+    }
 
     public function getTitle(): string
     {

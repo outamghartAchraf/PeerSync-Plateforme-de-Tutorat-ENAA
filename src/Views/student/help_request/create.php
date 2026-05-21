@@ -30,6 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
 
         $helpRequest = new HelpRequest(
+            0,
             $title,
             $description,
             $technology,
