@@ -55,4 +55,9 @@ class HelpRequestService
     {
         return $this->repo->getRequests($filters);
     }
+
+        public function getRequestById(int $id): ?HelpRequest
+    {
+        return $this->repo->findById($id);
+    }
 }
