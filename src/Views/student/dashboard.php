@@ -70,97 +70,10 @@ $resolvedRequests = $helpService->countResolved();
 <div class="flex">
 
     <!-- SIDEBAR -->
-    <aside class="w-64 h-screen fixed bg-white/5 backdrop-blur-2xl border-r border-white/10 p-6">
-
-        <!-- LOGO -->
-        <h1 class="text-3xl font-bold text-cyan-400 mb-10">
-
-            <i class="fa-solid fa-graduation-cap"></i>
-
-            PeerSync
-
-        </h1>
-
-        <!-- MENU -->
-        <nav class="space-y-3">
-
-            <a href="#"
-               class="flex items-center gap-3 bg-cyan-500/20 text-cyan-300 px-4 py-3 rounded-2xl">
-
-                <i class="fa-solid fa-house"></i>
-
-                Dashboard
-
-            </a>
-
-            <a href="help_request/list.php"
-               class="flex items-center gap-3 hover:bg-white/10 px-4 py-3 rounded-2xl transition">
-
-                <i class="fa-solid fa-list-check"></i>
-
-                Requests
-
-            </a>
-
-            <a href="#"
-               class="flex items-center gap-3 hover:bg-white/10 px-4 py-3 rounded-2xl transition">
-
-                <i class="fa-solid fa-circle-check"></i>
-
-                Solved
-
-            </a>
-
-
-            <a href="#"
-               class="flex items-center gap-3 hover:bg-white/10 px-4 py-3 rounded-2xl transition">
-
-                <i class="fa-solid fa-star"></i>
-
-                Reviews
-
-            </a>
-
-            <a href="#"
-               class="flex items-center gap-3 hover:bg-white/10 px-4 py-3 rounded-2xl transition">
-
-                <i class="fa-solid fa-user"></i>
-
-                Profile
-
-            </a>
-
-            <a href="../auth/logout.php"
-               class="flex items-center gap-3 hover:bg-red-500/20 text-red-400 px-4 py-3 rounded-2xl transition">
-
-                <i class="fa-solid fa-right-from-bracket"></i>
-
-                Logout
-
-            </a>
-
-        </nav>
-
-        <!-- USER CARD -->
-        <div class="absolute bottom-6 left-6 right-6">
-
-            <div class="bg-white/5 rounded-2xl p-4 border border-white/10">
-
-                <p class="text-sm text-gray-400">
-                    Logged in as
-                </p>
-
-                <h2 class="font-bold mt-1">
-
-                    <?= htmlspecialchars($user->name) ?>
-
-                </h2>
-
-            </div>
-
-        </div>
-
-    </aside>
+    <!-- SIDEBAR -->
+    <div class="w-full md:w-64 md:fixed">
+        <?php require_once __DIR__ . '/../layouts/sidebar.php'; ?>
+    </div>
 
     <!-- MAIN CONTENT -->
     <main class="ml-64 w-full p-8">
@@ -171,7 +84,7 @@ $resolvedRequests = $helpService->countResolved();
             <div>
 
                 <h1 class="text-4xl font-bold">
-                    Welcome back 👋
+                    Welcome back 
                 </h1>
 
                 <p class="text-gray-400 mt-2">

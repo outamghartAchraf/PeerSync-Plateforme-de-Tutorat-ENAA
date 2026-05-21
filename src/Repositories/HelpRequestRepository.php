@@ -96,4 +96,34 @@ class HelpRequestRepository
 
         return array_map(static fn (object $row): HelpRequest => HelpRequest::fromRow($row), $rows);
     }
+
+        public function findById(int $id): ?HelpRequest
+    {
+        $statement = $this->pdo->prepare(
+            'SELECT hr.id,
+                hr.title,
+                hr.description,
+                hr.technology,
+                UPPER(hr.status) AS status,
+                hr.student_id AS creator_id,
+                hr.tutor_id AS helper_id,
+                hr.created_at,
+                hr.resolved_at,
+                creator.name AS creator_name,
+                creator.email AS creator_email,
+                helper.name AS helper_name,
+                helper.email AS helper_email
+             FROM help_request hr
+             JOIN users creator ON creator.id = hr.student_id
+             LEFT JOIN users helper ON helper.id = hr.tutor_id
+             WHERE hr.id = :id
+             LIMIT 1'
+        );
+
+        $statement->execute(['id' => $id]);
+
+        $result = $statement->fetch(PDO::FETCH_OBJ);
+
+        return $result ? HelpRequest::fromRow($result) : null;
+    }
 }
