@@ -50,4 +50,9 @@ class HelpRequestService
 
         return $this->repo->create($helpRequest);
     }
+
+    public function getRequests(array $filters): array
+    {
+        return $this->repository->getRequests($filters);
+    }
 }
