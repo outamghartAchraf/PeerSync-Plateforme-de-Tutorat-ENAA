@@ -92,4 +92,46 @@ class HelpRequestService
 
     return true;
 }
+
+    public function resolveRequest($requestId, $userId, $creatorId)
+    {
+        
+        if ($userId != $creatorId) {
+            throw new \Exception("Only creator can resolve this request");
+        }
+
+        $request = $this->repo->findById($requestId);
+
+    
+        if (!$request) {
+            throw new \Exception("Request not found");
+        }
+
+   
+        if ($request->creator_id != $creatorId) {
+            throw new \Exception("Access denied");
+        }
+
+        if (empty($request->helper_id)) {
+            throw new \Exception("No helper assigned");
+        }
+
+    
+        if ($request->status == 'RESOLVED') {
+            throw new \Exception("Request already resolved");
+        }
+
+    
+        $resolved = $this->repo->resolveRequest($requestId, $creatorId);
+
+   
+        if (!$resolved) {
+            throw new \Exception("Resolve failed");
+        }
+
+        // Add points
+      
+
+        return true;
+    }
 }
