@@ -47,7 +47,7 @@ $namePath = $_SERVER['PHP_SELF'];
            class="flex items-center gap-3 hover:bg-white/10 px-4 py-3 rounded-2xl transition">
 
             <i class="fa-solid fa-circle-check"></i>
-            Solved
+            Review
         </a>
 
         <a href="#"
