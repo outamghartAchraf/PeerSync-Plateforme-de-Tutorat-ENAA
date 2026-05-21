@@ -16,7 +16,7 @@ use Src\Services\HelpRequestService;
 use Src\Entities\HelpRequest;
 
 $service = new HelpRequestService();
- 
+
 
 $user = $_SESSION['user'];
 
@@ -56,8 +56,6 @@ $showResolveButton =
     $creatorId === (int) $user->id &&
     $requestStatus !== 'RESOLVED';
 
- 
-
 $requestTitle = (string) ($request->title ?? 'Untitled request');
 $requestDescription = (string) ($request->description ?? '');
 $requestTechnology = (string) ($request->technology ?? 'Unknown');
@@ -65,8 +63,8 @@ $creatorName = (string) ($request->creator_name ?? 'Unknown');
 
 $helperName =
     $helperId > 0
-        ? (string) ($request->helper_name ?? 'Not assigned')
-        : 'Not assigned';
+    ? (string) ($request->helper_name ?? 'Not assigned')
+    : 'Not assigned';
 
 ?>
 
@@ -78,11 +76,25 @@ $helperName =
     <meta charset="UTF-8">
 
     <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+        content="width=device-width, initial-scale=1.0">
 
     <title>Request Details</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #06b6d4;
+            border-radius: 20px;
+        }
+    </style>
 
     <script>
         setTimeout(() => {
@@ -94,59 +106,58 @@ $helperName =
 
 </head>
 
-<body class="min-h-screen bg-slate-950 text-white">
+<body class="bg-[#020617] text-white min-h-screen overflow-x-hidden">
 
-<?php if (!empty($_SESSION['flash_success'])): ?>
-
-    <div class="flash-message fixed left-1/2 top-4 z-50 w-[calc(100%-2rem)] max-w-xl -translate-x-1/2 rounded-2xl border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-200 shadow-lg backdrop-blur">
-
-        <?= htmlspecialchars((string) $_SESSION['flash_success']) ?>
-
+    <!-- BACKGROUND -->
+    <div class="fixed inset-0 -z-10 overflow-hidden">
+        <div class="absolute top-0 left-0 w-96 h-96 bg-cyan-500/20 blur-3xl rounded-full"></div>
+        <div class="absolute bottom-0 right-0 w-96 h-96 bg-blue-600/20 blur-3xl rounded-full"></div>
     </div>
 
-    <?php unset($_SESSION['flash_success']); ?>
+    <?php if (!empty($_SESSION['flash_success'])): ?>
+        <div class="flash-message fixed left-1/2 top-4 z-50 w-[calc(100%-2rem)] max-w-xl -translate-x-1/2 rounded-2xl border border-green-500/30 bg-green-500/10 px-4 py-3 text-sm text-green-300 shadow-lg backdrop-blur">
+            <i class="fa-solid fa-circle-check mr-2"></i><?= htmlspecialchars((string) $_SESSION['flash_success']) ?>
+        </div>
+        <?php unset($_SESSION['flash_success']); ?>
+    <?php endif; ?>
 
-<?php endif; ?>
-
-
-<?php if (!empty($_SESSION['flash_error'])): ?>
-
-    <div class="flash-message fixed left-1/2 top-16 z-50 w-[calc(100%-2rem)] max-w-xl -translate-x-1/2 rounded-2xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-200 shadow-lg backdrop-blur">
-
-        <?= htmlspecialchars((string) $_SESSION['flash_error']) ?>
-
-    </div>
-
-    <?php unset($_SESSION['flash_error']); ?>
-
-<?php endif; ?>
+    <?php if (!empty($_SESSION['flash_error'])): ?>
+        <div class="flash-message fixed left-1/2 top-16 z-50 w-[calc(100%-2rem)] max-w-xl -translate-x-1/2 rounded-2xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-300 shadow-lg backdrop-blur">
+            <i class="fa-solid fa-circle-exclamation mr-2"></i><?= htmlspecialchars((string) $_SESSION['flash_error']) ?>
+        </div>
+        <?php unset($_SESSION['flash_error']); ?>
+    <?php endif; ?>
 
 
-<div class="mx-auto max-w-5xl px-4 py-6 sm:px-6 lg:px-8">
+    <main class="max-w-6xl mx-auto w-full p-8">
 
-    <div class="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-2xl shadow-slate-950/20 backdrop-blur lg:p-8">
-
-        <!-- HEADER -->
-        <div class="flex flex-col gap-4 border-b border-white/10 pb-6 sm:flex-row sm:items-start sm:justify-between">
+        <!-- PAGE HEADER -->
+        <div class="flex justify-between items-center mb-8">
 
             <div>
-
-                <p class="text-sm uppercase tracking-[0.3em] text-cyan-300/70">
-                    Request Details
+                <p class="text-gray-400 text-sm uppercase tracking-widest mb-1">
+                    <i class="fa-solid fa-file-lines mr-2"></i>Help Requests
                 </p>
-
-                <h1 class="mt-2 text-3xl font-bold text-white">
-                    <?= htmlspecialchars($requestTitle) ?>
+                <h1 class="text-4xl font-bold">
+                    Request Details
                 </h1>
-
             </div>
 
-            <span class="inline-flex self-start rounded-full px-4 py-2 text-sm font-semibold
-                <?= $requestStatus === 'RESOLVED'
-                    ? 'bg-emerald-500/15 text-emerald-200'
-                    : ($requestStatus === 'ASSIGNED'
-                        ? 'bg-cyan-500/15 text-cyan-200'
-                        : 'bg-amber-500/15 text-amber-200') ?>">
+            <!-- STATUS BADGE -->
+            <span class="inline-flex items-center gap-2 px-5 py-2 rounded-full text-sm font-semibold
+            <?= $requestStatus === 'RESOLVED'
+                ? 'bg-green-500/20 text-green-300'
+                : ($requestStatus === 'ASSIGNED'
+                    ? 'bg-cyan-500/20 text-cyan-300'
+                    : 'bg-orange-500/20 text-orange-300') ?>">
+
+                <?php if ($requestStatus === 'RESOLVED'): ?>
+                    <i class="fa-solid fa-circle-check"></i>
+                <?php elseif ($requestStatus === 'ASSIGNED'): ?>
+                    <i class="fa-solid fa-user-check"></i>
+                <?php else: ?>
+                    <i class="fa-solid fa-clock"></i>
+                <?php endif; ?>
 
                 <?= ucfirst(strtolower(htmlspecialchars($requestStatus))) ?>
 
@@ -154,168 +165,156 @@ $helperName =
 
         </div>
 
-        <!-- CONTENT -->
-        <div class="grid gap-6 py-6 lg:grid-cols-[1.4fr_0.9fr]">
+        <!-- TITLE ROW -->
+        <div class="bg-white/5 border border-white/10 backdrop-blur-xl rounded-3xl p-6 mb-6">
+            <h2 class="text-2xl font-bold text-white">
+                <?= htmlspecialchars($requestTitle) ?>
+            </h2>
+        </div>
 
-            <!-- LEFT -->
-            <div class="space-y-6">
+        <!-- CONTENT GRID -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+            <!-- LEFT — Description + Activity + Comments -->
+            <div class="lg:col-span-2 space-y-6">
 
                 <!-- DESCRIPTION -->
-                <div class="rounded-3xl border border-white/10 bg-slate-950/50 p-5">
+                <div class="bg-white/5 border border-white/10 backdrop-blur-xl rounded-3xl p-6">
 
-                    <h2 class="text-sm font-semibold uppercase tracking-[0.3em] text-slate-400">
+                    <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-align-left text-cyan-400"></i>
                         Description
-                    </h2>
+                    </h3>
 
-                    <p class="mt-4 whitespace-pre-line leading-7 text-slate-300">
+                    <p class="text-gray-300 leading-7 whitespace-pre-line">
                         <?= htmlspecialchars($requestDescription) ?>
                     </p>
 
                 </div>
 
                 <!-- ACTIVITY -->
-                <div class="rounded-3xl border border-white/10 bg-slate-950/50 p-5">
+                <div class="bg-white/5 border border-white/10 backdrop-blur-xl rounded-3xl p-6">
 
-                    <h2 class="text-sm font-semibold uppercase tracking-[0.3em] text-slate-400">
+                    <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-chart-line text-cyan-400"></i>
                         Activity
-                    </h2>
+                    </h3>
 
-                    <div class="mt-4 space-y-4 text-sm text-slate-300">
-
-                        <p>
-                            <span class="text-slate-500">Technology:</span>
-                            <?= htmlspecialchars($requestTechnology) ?>
-                        </p>
+                    <div class="space-y-4 text-sm">
 
                         <div class="flex items-center gap-3">
-
-                            <div class="flex h-10 w-10 items-center justify-center rounded-full bg-cyan-500 text-sm font-bold text-slate-950">
-                                <?= strtoupper(substr($creatorName, 0, 1)) ?>
-                            </div>
-
-                            <div>
-                                <p class="font-semibold">
-                                    <?= htmlspecialchars($creatorName) ?>
-                                </p>
-
-                                <p class="text-xs text-slate-500">
-                                    Request Creator
-                                </p>
-                            </div>
-
+                            <i class="fa-solid fa-code text-gray-500 w-4"></i>
+                            <span class="text-gray-400">Technology:</span>
+                            <span class="text-white font-medium"><?= htmlspecialchars($requestTechnology) ?></span>
                         </div>
 
-                        <p>
-                            <span class="text-slate-500">Helper:</span>
-                            <?= htmlspecialchars($helperName) ?>
-                        </p>
+                        <div class="flex items-center gap-3">
+                            <div class="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-r from-cyan-500 to-blue-600 text-sm font-bold text-white shrink-0">
+                                <?= strtoupper(substr($creatorName, 0, 1)) ?>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-white"><?= htmlspecialchars($creatorName) ?></p>
+                                <p class="text-xs text-gray-400">
+                                    <i class="fa-solid fa-user mr-1"></i>Request Creator
+                                </p>
+                            </div>
+                        </div>
 
-                        <p>
-                            <span class="text-slate-500">Created:</span>
-                            <?= htmlspecialchars((string) ($request->created_at ?? '')) ?>
-                        </p>
+                        <div class="flex items-center gap-3">
+                            <i class="fa-solid fa-handshake text-gray-500 w-4"></i>
+                            <span class="text-gray-400">Helper:</span>
+                            <span class="text-white font-medium"><?= htmlspecialchars($helperName) ?></span>
+                        </div>
+
+                        <div class="flex items-center gap-3">
+                            <i class="fa-solid fa-calendar text-gray-500 w-4"></i>
+                            <span class="text-gray-400">Created:</span>
+                            <span class="text-white font-medium"><?= htmlspecialchars((string) ($request->created_at ?? '')) ?></span>
+                        </div>
 
                     </div>
 
                 </div>
 
                 <!-- COMMENTS -->
-                <div class="rounded-3xl border border-white/10 bg-slate-950/50 p-5">
+                <div class="bg-white/5 border border-white/10 backdrop-blur-xl rounded-3xl p-6">
 
-                    <h2 class="text-sm font-semibold uppercase tracking-[0.3em] text-slate-400">
+                    <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-comments text-cyan-400"></i>
                         Comments
-                    </h2>
+                    </h3>
 
-                    <div class="mt-4 space-y-4">
-
-   
-
+                    <div class="space-y-4">
+                        <!-- comments go here -->
                     </div>
 
                 </div>
 
             </div>
 
-            <!-- RIGHT -->
-            <aside class="space-y-4 rounded-3xl border border-white/10 bg-slate-950/50 p-5">
+            <!-- RIGHT — Actions -->
+            <div class="bg-white/5 border border-white/10 backdrop-blur-xl rounded-3xl p-6 space-y-4 h-fit">
 
-                <h2 class="text-sm font-semibold uppercase tracking-[0.3em] text-slate-400">
+                <h3 class="text-lg font-bold flex items-center gap-2">
+                    <i class="fa-solid fa-bolt text-cyan-400"></i>
                     Actions
-                </h2>
+                </h3>
 
                 <?php if ($canAssign): ?>
-
                     <a href="assign.php?id=<?= $requestIdValue ?>"
-                       class="inline-flex w-full items-center justify-center rounded-2xl bg-cyan-400 px-4 py-3 font-semibold text-slate-950 transition hover:-translate-y-0.5 hover:bg-cyan-300">
-
-                        Take This Request 🚀
-
+                        class="flex items-center justify-center gap-3 bg-gradient-to-r from-cyan-500 to-blue-600 hover:scale-105 transition py-4 rounded-2xl font-semibold shadow-lg w-full">
+                        <i class="fa-solid fa-rocket"></i>
+                        Take This Request
                     </a>
-
                 <?php endif; ?>
 
                 <?php if ($showResolveButton): ?>
 
                     <?php if ($canResolve): ?>
-
                         <a href="resolve.php?id=<?= $requestIdValue ?>"
-                           class="inline-flex w-full items-center justify-center rounded-2xl bg-emerald-400 px-4 py-3 font-semibold text-slate-950 transition hover:-translate-y-0.5 hover:bg-emerald-300">
-
+                            class="flex items-center justify-center gap-3 bg-green-500/20 hover:bg-green-500/30 text-green-300 transition py-4 rounded-2xl font-semibold w-full">
+                            <i class="fa-solid fa-circle-check"></i>
                             Mark as Resolved
-
                         </a>
-
                     <?php else: ?>
-
-                        <button type="button"
-                                disabled
-                                class="inline-flex w-full cursor-not-allowed items-center justify-center rounded-2xl bg-emerald-400/40 px-4 py-3 font-semibold text-slate-300">
-
+                        <button type="button" disabled
+                            class="flex items-center justify-center gap-3 bg-white/5 text-gray-500 cursor-not-allowed py-4 rounded-2xl font-semibold w-full">
+                            <i class="fa-solid fa-circle-check"></i>
                             Mark as Resolved
-
                         </button>
-
-                        <p class="text-xs text-amber-200/90">
+                        <p class="text-xs text-orange-300 flex items-start gap-2">
+                            <i class="fa-solid fa-circle-info mt-0.5 shrink-0"></i>
                             You can resolve this request after a helper is assigned.
                         </p>
-
                     <?php endif; ?>
 
                 <?php endif; ?>
 
                 <?php if ($canReview): ?>
-
                     <a href="../reviews/create.php?request_id=<?= $requestIdValue ?>"
-                       class="inline-flex w-full items-center justify-center rounded-2xl bg-purple-400 px-4 py-3 font-semibold text-slate-950 transition hover:-translate-y-0.5 hover:bg-purple-300">
-
-                        Leave Review ⭐
-
+                        class="flex items-center justify-center gap-3 bg-gradient-to-r from-purple-500 to-blue-600 hover:scale-105 transition py-4 rounded-2xl font-semibold shadow-lg w-full">
+                        <i class="fa-solid fa-star"></i>
+                        Leave Review
                     </a>
-
                 <?php elseif ($creatorId === (int) $user->id && $requestStatus === 'RESOLVED'): ?>
-
-                    <div class="rounded-2xl border border-amber-500/20 bg-amber-500/10 px-4 py-3 text-sm text-amber-200">
-
+                    <div class="bg-orange-500/10 border border-orange-500/20 rounded-2xl px-4 py-3 text-sm text-orange-300 flex items-start gap-2">
+                        <i class="fa-solid fa-circle-info mt-0.5 shrink-0"></i>
                         This request was resolved without an assigned helper.
-
                     </div>
-
                 <?php endif; ?>
 
                 <a href="list.php"
-                   class="inline-flex w-full items-center justify-center rounded-2xl border border-white/10 bg-white/5 px-4 py-3 font-semibold text-white transition hover:bg-white/10">
-
+                    class="flex items-center justify-center gap-3 bg-white/10 hover:bg-white/20 transition py-4 rounded-2xl font-semibold w-full">
+                    <i class="fa-solid fa-arrow-left"></i>
                     Back to List
-
                 </a>
 
-            </aside>
+            </div>
 
         </div>
 
-    </div>
-
-</div>
+    </main>
 
 </body>
+
 </html>

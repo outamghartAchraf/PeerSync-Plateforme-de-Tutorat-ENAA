@@ -147,4 +147,25 @@ class HelpRequestRepository
 
     return $stmt->rowCount() > 0;
 }
+
+    public function resolveRequest($requestId, $creatorId)
+    {
+        $sql = "UPDATE help_request
+            SET status = ?, resolved_at = NOW()
+            WHERE id = ?
+            AND student_id = ?
+            AND tutor_id IS NOT NULL
+            AND status != ?";
+
+        $stmt = $this->pdo->prepare($sql);
+
+        $stmt->execute([
+            'resolved',
+            $requestId,
+            $creatorId,
+            'resolved'
+        ]);
+
+        return $stmt->rowCount() > 0;
+    }
 }
