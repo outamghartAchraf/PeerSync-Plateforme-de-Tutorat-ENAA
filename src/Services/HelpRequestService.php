@@ -20,6 +20,12 @@ class HelpRequestService
         return $this->repo->countAll();
     }
 
+    public function countPending(): int
+    {
+        return $this->repo->countByStatus('pending');
+    }
+
+
 
 
 }
