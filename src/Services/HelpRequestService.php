@@ -3,18 +3,22 @@
 namespace Src\Services;
 
 require_once __DIR__ . '/../Repositories/HelpRequestRepository.php';
+require_once __DIR__ . '/../Repositories/UserRepository.php';
 include_once __DIR__ . '/../Entities/HelpRequest.php';
 
 use Src\Repositories\HelpRequestRepository;
-use Src\Entities\HelpRequest; 
+use Src\Entities\HelpRequest;
+use Src\Repositories\UserRepository;
 
 class HelpRequestService
 {
     private HelpRequestRepository $repo;
+    private UserRepository $userRepository;
 
     public function __construct()
     {
         $this->repo = new HelpRequestRepository();
+        $this->userRepository = new UserRepository();
     }
 
     public function countAll(): int
@@ -130,8 +134,9 @@ class HelpRequestService
         }
 
         // Add points
-      
 
+        $this->userRepository->addPoints($request->helper_id, 10);
+        $this->userRepository->addPoints($request->creator_id, 5);
         return true;
     }
 }
