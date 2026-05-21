@@ -9,12 +9,15 @@ session_start();
 
 $auth = new AuthService();
 
-$error = "";
-
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
-    $email = $_POST["email"] ;
-    $password = $_POST["password"] ;
+    $email = trim($_POST["email"]);
+    $password = trim($_POST["password"]);
+
+    if (empty($email) || empty($password)) {
+        header("Location: login.php?error=1");
+        exit;
+    }
 
     $user = $auth->login($email, $password);
 
@@ -29,14 +32,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         exit;
 
-    } else {
-        $error = "Invalid email or password ";
     }
+
+    header("Location: login.php?error=1");
+    exit;
 }
-?>
-
-
-<?php
-echo password_hash("123456", PASSWORD_DEFAULT);
-
 ?>

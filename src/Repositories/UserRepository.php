@@ -26,4 +26,35 @@ class UserRepository
         return $user ?: null;
     }
 
+    public function findById(int $id): ?array
+    {
+        $stmt = $this->pdo->prepare("SELECT users.*, roles.label AS role_name
+        FROM users
+        JOIN roles ON users.role_id = roles.id
+        WHERE users.id = ?");
+        $stmt->execute([$id]);
+
+        $user = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+        return $user ?: null;
+    }
+
+    public function incrementPoints(int $userId, int $points): bool
+    {
+        $stmt = $this->pdo->prepare('UPDATE users SET points = points + ? WHERE id = ?');
+        return $stmt->execute([$points, $userId]);
+    }
+
+    public function allByRole(string $roleLabel): array
+    {
+        $stmt = $this->pdo->prepare("SELECT users.*, roles.label AS role_name
+        FROM users
+        JOIN roles ON users.role_id = roles.id
+        WHERE roles.label = ?
+        ORDER BY users.name ASC");
+        $stmt->execute([$roleLabel]);
+
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
 }
