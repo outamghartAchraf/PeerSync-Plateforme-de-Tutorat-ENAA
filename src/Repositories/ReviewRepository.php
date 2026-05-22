@@ -49,4 +49,25 @@ class ReviewRepository
         return $stmt->fetchColumn() > 0;
     }
 
+    public function findByRequestAndReviewer(int $requestId, int $reviewerId): ?Review
+    {
+        $sql = "SELECT r.*, u.name AS reviewer_name, h.title AS request_title
+            FROM review r
+            JOIN users u ON u.id = r.reviewer_id
+            JOIN help_request h ON h.id = r.help_request_id
+            WHERE r.help_request_id = ?
+            AND r.reviewer_id = ?
+            LIMIT 1";
+
+        $stmt = $this->db->prepare($sql);
+
+        $stmt->execute([
+            $requestId,
+            $reviewerId
+        ]);
+
+        $row = $stmt->fetch(PDO::FETCH_OBJ);
+
+        return $row ? Review::fromRow($row) : null;
+    }
 }
