@@ -55,6 +55,11 @@ class HelpRequestService
         return $this->repo->create($helpRequest);
     }
 
+        public function getRecentRequests(): array
+    {
+        return $this->repo->getRecentRequests();
+    }
+
     public function getRequests(array $filters): array
     {
         return $this->repo->getRequests($filters);

@@ -51,6 +51,35 @@ class HelpRequestRepository
         ]);
     }
 
+    public function getRecentRequests(int $limit = 5): array
+{
+    $sql = "SELECT hr.id,
+                   hr.title,
+                   hr.description,
+                   hr.technology,
+                   UPPER(hr.status) AS status,
+                   hr.student_id AS creator_id,
+                   hr.tutor_id AS helper_id,
+                   hr.created_at,
+                   hr.resolved_at,
+                   creator.name AS creator_name,
+                   helper.name AS helper_name
+            FROM help_request hr
+            JOIN users creator ON creator.id = hr.student_id
+            LEFT JOIN users helper ON helper.id = hr.tutor_id
+            ORDER BY hr.created_at DESC
+            LIMIT $limit";
+
+    $stmt = $this->pdo->prepare($sql);
+    $stmt->execute();
+
+    $rows = $stmt->fetchAll(PDO::FETCH_OBJ);
+
+    return array_map(function ($row) {
+        return HelpRequest::fromRow($row);
+    }, $rows);
+}
+
     public function getRequests(array $filters): array
     {
         $sql = 'SELECT hr.id,

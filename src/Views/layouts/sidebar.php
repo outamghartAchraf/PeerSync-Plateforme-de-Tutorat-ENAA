@@ -43,14 +43,15 @@ $namePath = $_SERVER['PHP_SELF'];
             Skill
         </a>
 
-        <a href="#"
-           class="flex items-center gap-3 hover:bg-white/10 px-4 py-3 rounded-2xl transition">
-
+        <a href="/PeerSync-Plateforme-de-Tutorat-ENAA/src/Views/student/reviews/list.php"
+           class="<?= ($namePath === '/PeerSync-Plateforme-de-Tutorat-ENAA/src/Views/student/reviews/list.php')
+               ? 'flex items-center gap-3 bg-white/10 text-cyan-400 px-4 py-3 rounded-2xl transition'
+               : 'flex items-center gap-3 hover:bg-white/10 px-4 py-3 rounded-2xl transition' ?>">
             <i class="fa-solid fa-circle-check"></i>
             Review
         </a>
 
-        <a href="#"
+        <a href="/PeerSync-Plateforme-de-Tutorat-ENAA/src/Views/student/profile.php"
            class="flex items-center gap-3 hover:bg-white/10 px-4 py-3 rounded-2xl transition">
 
             <i class="fa-solid fa-user"></i>

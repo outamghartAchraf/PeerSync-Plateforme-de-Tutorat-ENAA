@@ -19,6 +19,7 @@ $helpService = new HelpRequestService();
 $totalRequests = $helpService->countAll();
 $pendingRequests = $helpService->countPending();
 $resolvedRequests = $helpService->countResolved();
+$recentRequests = $helpService->getRecentRequests();
 
 ?>
 
@@ -244,6 +245,7 @@ $resolvedRequests = $helpService->countResolved();
                 <div class="space-y-4">
 
                     <!-- CARD -->
+                <?php foreach ($recentRequests as $r): ?>     
                     <div class="bg-white/5 hover:bg-white/10 transition rounded-2xl p-4 border border-white/5">
 
                         <div class="flex justify-between">
@@ -252,30 +254,34 @@ $resolvedRequests = $helpService->countResolved();
 
                                 <h3 class="font-semibold">
 
-                                    SQL JOIN Problem
+                                    <?= $r->getTitle() ?>
 
                                 </h3>
 
                                 <p class="text-sm text-gray-400 mt-1">
 
-                                    Pending request in SQL category
+                                    <?= $r->getDescription() ?>
 
                                 </p>
 
                             </div>
 
                             <span class="bg-orange-500/20 text-orange-300 px-3 py-1 rounded-full text-sm h-fit flex items-center gap-2">
-
+                                    
+                            <?php 
+                            
+                            
+                            ?>
                                 <i class="fa-solid fa-clock"></i>
 
-                                Pending
+                                <?= $r->getStatus() ?>
 
                             </span>
 
                         </div>
 
                     </div>
-
+                    <?php endforeach; ?>
                     <!-- CARD -->
                     <div class="bg-white/5 hover:bg-white/10 transition rounded-2xl p-4 border border-white/5">
 
