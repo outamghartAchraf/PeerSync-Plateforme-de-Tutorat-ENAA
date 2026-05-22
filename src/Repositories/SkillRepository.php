@@ -9,16 +9,16 @@ use PDO;
 
 class SkillRepository
 {
-   
+
     private $pdo;
 
     public function __construct()
     {
-      
+
         $this->pdo = DB::connect();
     }
 
-        public function getAllSkills(): array
+    public function getAllSkills(): array
     {
         $statement = $this->pdo->query("
             SELECT * FROM skills
@@ -47,7 +47,7 @@ class SkillRepository
         return $statement->fetchAll(PDO::FETCH_OBJ);
     }
 
-        public function addSkillToUser(
+    public function addSkillToUser(
         int $userId,
         int $skillId,
         string $type
@@ -65,5 +65,23 @@ class SkillRepository
         ]);
     }
 
-    
+    public function deleteSkill(
+        int $userId,
+        int $skillId,
+        string $type
+    ): bool {
+
+        $statement = $this->pdo->prepare("
+            DELETE FROM user_skill
+            WHERE user_id = ?
+            AND skill_id = ?
+            AND type = ?
+        ");
+
+        return $statement->execute([
+            $userId,
+            $skillId,
+            $type
+        ]);
+    }
 }
