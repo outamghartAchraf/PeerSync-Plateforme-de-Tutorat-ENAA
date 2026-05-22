@@ -48,4 +48,17 @@ class SkillService
             $type
         );
     }
+
+    public function deleteSkill(
+        int $userId,
+        int $skillId,
+        string $type
+    ): bool {
+
+        return $this->repository->deleteSkill(
+            $userId,
+            $skillId,
+            $type
+        );
+    }
 }
