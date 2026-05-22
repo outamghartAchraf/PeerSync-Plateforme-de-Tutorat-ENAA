@@ -40,11 +40,13 @@ if ((int) $request->creator_id === (int) $user->id) {
 }
 
 try {
+    $meetLink = "https://meet.google.com/" . substr(md5(time()), 0, 10);
 
     $service->assignRequest(
         $requestId,
         $user->id,
-        (int) $request->creator_id
+        (int) $request->creator_id,
+        $meetLink
     );
 
     $_SESSION['flash_success'] = 'Request assigned successfully.';

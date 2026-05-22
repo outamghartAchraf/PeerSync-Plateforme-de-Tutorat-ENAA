@@ -70,7 +70,7 @@ class HelpRequestService
         return $this->repo->findById($id);
     }
 
-    public function assignRequest($requestId, $userId, $creatorId)
+    public function assignRequest($requestId, $userId, $creatorId, $meetLink)
 {
      
     if ($userId == $creatorId) {
@@ -92,7 +92,7 @@ class HelpRequestService
     }
 
     
-    $assigned = $this->repo->assignRequest($requestId, $userId);
+    $assigned = $this->repo->assignRequest($requestId, $userId, $meetLink);
 
    
     if (!$assigned) {

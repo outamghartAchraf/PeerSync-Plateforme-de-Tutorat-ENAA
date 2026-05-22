@@ -20,7 +20,7 @@ class HelpRequest
     private int $studentId;
 
     private ?int $tutorId;
-
+    private ?string $meetLink;
     private ?string $createdAt;
 
     private ?string $resolvedAt;
@@ -42,7 +42,8 @@ class HelpRequest
         ?string $creatorName = null,
         ?string $creatorEmail = null,
         ?string $helperName = null,
-        ?string $helperEmail = null
+        ?string $helperEmail = null,
+        ?string $meetLink = null
     ) {
 
         $this->id = $id;
@@ -58,6 +59,7 @@ class HelpRequest
         $this->creatorEmail = $creatorEmail;
         $this->helperName = $helperName;
         $this->helperEmail = $helperEmail;
+        $this->meetLink = $meetLink;
     }
 
     public static function fromRow(object $row): self
@@ -76,6 +78,7 @@ class HelpRequest
             isset($row->creator_email) ? (string) $row->creator_email : null,
             isset($row->helper_name) ? (string) $row->helper_name : null,
             isset($row->helper_email) ? (string) $row->helper_email : null,
+            isset($row->meet_link) ? (string) $row->meet_link : null
         );
     }
 
@@ -106,13 +109,15 @@ class HelpRequest
             'helper_name' => $this->helperName,
             'helperEmail' => $this->helperEmail,
             'helper_email' => $this->helperEmail,
+            'meetLink' => $this->meetLink,
+            'meet_link' => $this->meetLink,
             default => null,
         };
     }
 
     public function __isset(string $name): bool
     {
-        return in_array($name, ['id', 'title', 'description', 'technology', 'status', 'studentId', 'student_id', 'creator_id', 'tutorId', 'tutor_id', 'helper_id', 'createdAt', 'created_at', 'resolvedAt', 'resolved_at', 'creatorName', 'creator_name', 'creatorEmail', 'creator_email', 'helperName', 'helper_name', 'helperEmail', 'helper_email'], true);
+        return in_array($name, ['id', 'title', 'description', 'technology', 'status', 'studentId', 'student_id', 'creator_id', 'tutorId', 'tutor_id', 'helper_id', 'createdAt', 'created_at', 'resolvedAt', 'resolved_at', 'creatorName', 'creator_name', 'creatorEmail', 'creator_email', 'helperName', 'helper_name', 'helperEmail', 'helper_email', 'meetLink', 'meet_link'], true);
     }
 
  
@@ -241,6 +246,10 @@ class HelpRequest
     public function getHelperEmail(): ?string
     {
         return $this->helperEmail;
+    }
+
+    public function getMeetLink(): ?string {
+        return $this->meetLink;
     }
 
     public function setHelperEmail(?string $helperEmail): void

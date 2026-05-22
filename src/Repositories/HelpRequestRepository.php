@@ -86,6 +86,7 @@ class HelpRequestRepository
                        hr.title,
                        hr.description,
                        hr.technology,
+                       hr.meet_link,
                        UPPER(hr.status) AS status,
                        hr.student_id AS creator_id,
                        hr.tutor_id AS helper_id,
@@ -133,6 +134,7 @@ class HelpRequestRepository
                 hr.title,
                 hr.description,
                 hr.technology,
+                hr.meet_link,
                 UPPER(hr.status) AS status,
                 hr.student_id AS creator_id,
                 hr.tutor_id AS helper_id,
@@ -156,10 +158,10 @@ class HelpRequestRepository
         return $result ? HelpRequest::fromRow($result) : null;
     }
 
-    public function assignRequest($requestId, $helperId)
+    public function assignRequest($requestId, $helperId, $meetLink)
 {
     $sql = "UPDATE help_request 
-            SET tutor_id = ?, status = ?
+            SET tutor_id = ?, status = ?, meet_link = ?
             WHERE id = ? 
             AND status = ?
             AND student_id != ?";
@@ -169,6 +171,7 @@ class HelpRequestRepository
     $stmt->execute([
         $helperId,
         'assigned',
+        $meetLink,
         $requestId,
         'pending',
         $helperId

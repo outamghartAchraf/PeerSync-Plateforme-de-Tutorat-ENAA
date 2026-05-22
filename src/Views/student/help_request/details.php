@@ -348,6 +348,22 @@ $helperName = $helperId > 0
                         </a>
                     <?php endif; ?>
 
+                    <!-- GOOGLE MEET -->
+<?php if (!empty($request->getMeetLink())): ?>
+
+    <a href="<?= htmlspecialchars($request->getMeetLink()) ?>"
+       target="_blank"
+       class="flex items-center justify-center gap-3 bg-cyan-500 hover:bg-cyan-400
+              transition py-4 rounded-2xl font-semibold text-slate-950 w-full">
+
+        <i class="fa-solid fa-video"></i>
+
+        Join Google Meet
+
+    </a>
+
+<?php endif; ?>
+
                     <!-- RESOLVE -->
                     <?php if ($showResolveButton): ?>
                         <?php if ($canResolve): ?>
