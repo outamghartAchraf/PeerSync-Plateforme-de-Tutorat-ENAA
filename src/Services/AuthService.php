@@ -35,7 +35,19 @@ class AuthService
     {
         return $this->repo->getById($id);
     }
+     
+    public function updateProfile(
+        int $id,
+        string $name,
+        string $email
+    ): bool {
 
+        return $this->repo->updateProfile(
+            $id,
+            $name,
+            $email
+        );
+    }
 
 
 }
