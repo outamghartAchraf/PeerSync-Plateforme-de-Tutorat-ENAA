@@ -27,4 +27,12 @@ class SkillService
             'mastered'
         );
     }
+
+    public function getLearningSkills(int $userId): array
+    {
+        return $this->repository->getUserSkills(
+            $userId,
+            'learning'
+        );
+    }
 }
