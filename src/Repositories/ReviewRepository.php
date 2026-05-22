@@ -31,4 +31,22 @@ class ReviewRepository
             $review->getComment()
         ]);
     }
+
+    public function exists(int $requestId, int $reviewerId): bool
+    {
+        $sql = "SELECT COUNT(*) 
+                FROM review
+                WHERE help_request_id = ?
+                AND reviewer_id = ?";
+
+        $stmt = $this->db->prepare($sql);
+
+        $stmt->execute([
+            $requestId,
+            $reviewerId
+        ]);
+
+        return $stmt->fetchColumn() > 0;
+    }
+
 }
