@@ -31,6 +31,11 @@ class AuthService
         return null;
     }
 
+     public function getUserById(int $id): ?object
+    {
+        return $this->repo->getById($id);
+    }
+
 
 
 }

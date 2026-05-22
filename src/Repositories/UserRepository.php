@@ -72,6 +72,23 @@ class UserRepository
         ]);
     }
 
+        public function getById(int $id): ?object
+    {
+        $statement = $this->pdo->prepare("
+            SELECT *
+            FROM users
+            WHERE id = ?
+        ");
+
+        $statement->execute([
+            $id
+        ]);
+
+        $user = $statement->fetch(PDO::FETCH_OBJ);
+
+        return $user ?: null;
+    }
+
   
 
 }

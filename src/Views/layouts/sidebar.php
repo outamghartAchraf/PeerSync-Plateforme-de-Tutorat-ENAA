@@ -51,7 +51,7 @@ $namePath = $_SERVER['PHP_SELF'];
             Review
         </a>
 
-        <a href="/PeerSync-Plateforme-de-Tutorat-ENAA/src/Views/student/profile.php"
+        <a href="/PeerSync-Plateforme-de-Tutorat-ENAA/src/Views/student/profile"
            class="flex items-center gap-3 hover:bg-white/10 px-4 py-3 rounded-2xl transition">
 
             <i class="fa-solid fa-user"></i>
