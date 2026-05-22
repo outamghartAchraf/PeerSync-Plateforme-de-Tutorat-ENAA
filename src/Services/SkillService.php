@@ -35,4 +35,17 @@ class SkillService
             'learning'
         );
     }
+
+    public function addSkill(
+        int $userId,
+        int $skillId,
+        string $type
+    ): bool {
+
+        return $this->repository->addSkillToUser(
+            $userId,
+            $skillId,
+            $type
+        );
+    }
 }
