@@ -89,6 +89,26 @@ class UserRepository
         return $user ?: null;
     }
 
+     public function updateProfile(
+        int $id,
+        string $name,
+        string $email
+    ): bool {
+
+        $statement = $this->pdo->prepare("
+            UPDATE users
+            SET name = ?,
+                email = ?
+            WHERE id = ?
+        ");
+
+        return $statement->execute([
+            $id,
+            $name,
+            $email
+        ]);
+    }
+
   
 
 }
