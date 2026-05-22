@@ -21,6 +21,7 @@ class ReviewService
         $this->helpRequestRepository = new HelpRequestRepository();
     }
 
+
     public function createReview(Review $review): bool
     {
         $requestId  = $review->getHelpRequestId();
@@ -69,6 +70,7 @@ class ReviewService
         return $this->repo->create($review);
     }
 
+
     public function getReviewsForRequest(int $requestId): array
     {
         if ($requestId <= 0) {
@@ -77,6 +79,4 @@ class ReviewService
 
         return $this->repo->findByRequestId($requestId);
     }
-
-
 }
