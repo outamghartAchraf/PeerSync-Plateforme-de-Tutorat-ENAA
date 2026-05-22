@@ -66,3 +66,54 @@ PeerSync/
 ### 1. Clone repository
 ```bash
 git clone https://github.com/your-username/PeerSync.git
+
+### 2. Move to XAMPP
+
+
+### 3. Configure database
+
+### 4. Run project
+
+
+---
+
+## 🧠 Modules
+
+- Authentication (Login / Register)
+- Help Request Management
+- Assignment System
+- Notifications System
+- Reviews System
+- Dashboard
+
+---
+
+## 📌 Future Improvements
+
+- Real-time notifications
+- Chat system between student & tutor
+- Email notifications
+- Admin panel
+- File uploads
+
+---
+
+## 👨‍💻 Author
+
+Developed by **Achraf Outamghart**
+
+---
+
+## 📜 License
+
+Educational project (ENAA)
+
+---
+
+## 🚀 Next Steps (Optional)
+
+If you want to improve this project further, you can add:
+
+- API REST version of the platform
+- WebSocket real-time notifications
+- Role-based admin dashboard
