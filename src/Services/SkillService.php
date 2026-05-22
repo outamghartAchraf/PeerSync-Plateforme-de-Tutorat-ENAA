@@ -19,4 +19,12 @@ class SkillService
     {
         return $this->repository->getAllSkills();
     }
+
+    public function getMasteredSkills(int $userId): array
+    {
+        return $this->repository->getUserSkills(
+            $userId,
+            'mastered'
+        );
+    }
 }
