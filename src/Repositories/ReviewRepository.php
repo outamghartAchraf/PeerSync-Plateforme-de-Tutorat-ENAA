@@ -16,7 +16,6 @@ class ReviewRepository
     {
         $this->db = \DB::connect();
     }
-
     public function create(Review $review): bool
     {
         $sql = "INSERT INTO review (help_request_id, reviewer_id, rating, comment)
@@ -31,6 +30,7 @@ class ReviewRepository
             $review->getComment()
         ]);
     }
+
 
     public function exists(int $requestId, int $reviewerId): bool
     {
@@ -48,6 +48,7 @@ class ReviewRepository
 
         return $stmt->fetchColumn() > 0;
     }
+
 
     public function findByRequestAndReviewer(int $requestId, int $reviewerId): ?Review
     {
@@ -71,6 +72,7 @@ class ReviewRepository
         return $row ? Review::fromRow($row) : null;
     }
 
+
     public function findByRequestId(int $requestId): array
     {
         $sql = "SELECT r.*, u.name AS reviewer_name, h.title AS request_title
@@ -88,6 +90,7 @@ class ReviewRepository
 
         return array_map(static fn($row) => Review::fromRow($row), $rows);
     }
+
 
     public function findAll(): array
     {
