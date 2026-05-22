@@ -69,5 +69,14 @@ class ReviewService
         return $this->repo->create($review);
     }
 
+    public function getReviewsForRequest(int $requestId): array
+    {
+        if ($requestId <= 0) {
+            return [];
+        }
+
+        return $this->repo->findByRequestId($requestId);
+    }
+
 
 }
