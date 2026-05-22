@@ -12,7 +12,18 @@ require_once __DIR__ . '/../../Services/HelpRequestService.php';
 
 use Src\Services\HelpRequestService;
 
+require_once __DIR__ . '/../../Services/NotificationService.php';
+
+use Src\Services\NotificationService;
+
+
+
 $user = is_object($_SESSION['user']) ? $_SESSION['user'] : (object) $_SESSION['user'];
+
+$notificationService = new NotificationService();
+
+$notifications = $notificationService->getUserNotifications((int)$user->id);
+$unreadCount = $notificationService->getUnreadCount((int)$user->id);
 
 $helpService = new HelpRequestService();
 
@@ -52,6 +63,8 @@ $recentRequests = $helpService->getRecentRequests();
             border-radius: 20px;
         }
     </style>
+
+
 
 </head>
 
@@ -96,11 +109,32 @@ $recentRequests = $helpService->getRecentRequests();
                 <div class="flex items-center gap-4">
 
                     <!-- NOTIFICATION -->
-                    <button class="bg-white/10 hover:bg-white/20 transition px-4 py-2 rounded-xl">
+<div class="relative notification-wrapper">
+    <button type="button"
+            class="notification-btn bg-white/10 hover:bg-white/20 transition px-4 py-2 rounded-xl">
+        <i class="fa-regular fa-bell"></i>
+    </button>
 
-                        <i class="fa-regular fa-bell"></i>
+    <?php if ($unreadCount > 0): ?>
+        <span class="absolute -top-2 -right-2 bg-red-500 text-white text-xs px-2 rounded-full">
+            <?= $unreadCount ?>
+        </span>
+    <?php endif; ?>
 
-                    </button>
+    <!-- DROPDOWN -->
+    <div class="notification-dropdown hidden absolute right-0 mt-2 w-80 bg-slate-900 border border-white/10 rounded-2xl shadow-lg p-3 z-50">
+        <?php if (empty($notifications)): ?>
+            <p class="text-gray-400 text-sm p-3">No notifications</p>
+        <?php else: ?>
+            <?php foreach ($notifications as $n): ?>
+                <div class="p-2 border-b border-white/10">
+                    <p class="text-sm"><?= htmlspecialchars($n->message) ?></p>
+                    <p class="text-xs text-gray-500"><?= $n->created_at ?></p>
+                </div>
+            <?php endforeach; ?>
+        <?php endif; ?>
+    </div>
+</div>
 
                     <!-- USER AVATAR -->
                     <div class="w-12 h-12 rounded-full bg-gradient-to-r from-cyan-500 to-blue-600 flex items-center justify-center font-bold text-lg">
@@ -372,6 +406,27 @@ $recentRequests = $helpService->getRecentRequests();
         </main>
 
     </div>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const wrapper = document.querySelector('.notification-wrapper');
+    const btn = wrapper.querySelector('.notification-btn');
+    const dropdown = wrapper.querySelector('.notification-dropdown');
+
+    btn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        dropdown.classList.toggle('hidden');
+    });
+
+    
+    document.addEventListener('click', function () {
+        dropdown.classList.add('hidden');
+    });
+
+});
+</script>
 
 </body>
 
