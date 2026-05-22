@@ -35,16 +35,34 @@ class SkillRepository
             FROM skills
             INNER JOIN user_skill
             ON skills.id = user_skill.skill_id
-            WHERE user_skill.user_id = :user_id
-            AND user_skill.type = :type
+            WHERE user_skill.user_id = ?
+            AND user_skill.type = ?
         ");
 
         $statement->execute([
-            'user_id' => $userId,
-            'type' => $type
+            $userId,
+            $type
         ]);
 
         return $statement->fetchAll(PDO::FETCH_OBJ);
+    }
+
+        public function addSkillToUser(
+        int $userId,
+        int $skillId,
+        string $type
+    ): bool {
+
+        $statement = $this->pdo->prepare("
+            INSERT INTO user_skill(user_id, skill_id, type)
+            VALUES(?, ?, ?)
+        ");
+
+        return $statement->execute([
+            $userId,
+            $skillId,
+            $type
+        ]);
     }
 
     
