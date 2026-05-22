@@ -88,4 +88,22 @@ class ReviewRepository
 
         return array_map(static fn($row) => Review::fromRow($row), $rows);
     }
+
+    public function findAll(): array
+    {
+        $sql = "SELECT r.*, 
+                       u.name AS reviewer_name,
+                       h.title AS request_title
+                FROM review r
+                JOIN users u ON u.id = r.reviewer_id
+                JOIN help_request h ON h.id = r.help_request_id
+                ORDER BY r.created_at DESC";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+
+        $rows = $stmt->fetchAll(PDO::FETCH_OBJ);
+
+        return array_map(static fn($row) => Review::fromRow($row), $rows);
+    }
 }
