@@ -5,10 +5,13 @@ namespace Src\Services;
 require_once __DIR__ . '/../Repositories/HelpRequestRepository.php';
 require_once __DIR__ . '/../Repositories/UserRepository.php';
 include_once __DIR__ . '/../Entities/HelpRequest.php';
+include_once __DIR__ . '/../Services/NotificationService.php';
 
 use Src\Repositories\HelpRequestRepository;
 use Src\Entities\HelpRequest;
 use Src\Repositories\UserRepository;
+use Src\Services\NotificationService;
+
 
 class HelpRequestService
 {
@@ -55,7 +58,7 @@ class HelpRequestService
         return $this->repo->create($helpRequest);
     }
 
-        public function getRecentRequests(): array
+    public function getRecentRequests(): array
     {
         return $this->repo->getRecentRequests();
     }
@@ -65,58 +68,67 @@ class HelpRequestService
         return $this->repo->getRequests($filters);
     }
 
-        public function getRequestById(int $id): ?HelpRequest
+    public function getRequestById(int $id): ?HelpRequest
     {
         return $this->repo->findById($id);
     }
 
     public function assignRequest($requestId, $userId, $creatorId, $meetLink)
-{
-     
-    if ($userId == $creatorId) {
-       
-         throw new \Exception("You cannot assign your own request");
+    {
+
+        if ($userId == $creatorId) {
+
+            throw new \Exception("You cannot assign your own request");
+        }
+
+
+        $request = $this->repo->findById($requestId);
+
+
+        if (!$request) {
+            throw new \Exception("Request not found");
+        }
+
+
+        if ($request->status != 'PENDING') {
+            throw new \Exception("Request already assigned");
+        }
+
+
+        $assigned = $this->repo->assignRequest($requestId, $userId, $meetLink);
+
+
+        if (!$assigned) {
+            throw new \Exception("Assign failed");
+        }
+
+        
+        $notificationService = new NotificationService();
+
+        $notificationService->notify(
+            $creatorId,
+            "Your request has been assigned. Join Meet: " . $meetLink,
+            $requestId
+        );
+
+        return true;
     }
-
-   
-    $request = $this->repo->findById($requestId);
-
-    
-    if (!$request) {
-         throw new \Exception("Request not found");
-    }
-
-     
-    if ($request->status != 'PENDING') {
-        throw new \Exception("Request already assigned");
-    }
-
-    
-    $assigned = $this->repo->assignRequest($requestId, $userId, $meetLink);
-
-   
-    if (!$assigned) {
-        throw new \Exception("Assign failed");
-    }
-
-    return true;
-}
 
     public function resolveRequest($requestId, $userId, $creatorId)
     {
-        
+
         if ($userId != $creatorId) {
             throw new \Exception("Only creator can resolve this request");
         }
 
         $request = $this->repo->findById($requestId);
 
-    
+
         if (!$request) {
             throw new \Exception("Request not found");
         }
 
-   
+
         if ($request->creator_id != $creatorId) {
             throw new \Exception("Access denied");
         }
@@ -125,18 +137,19 @@ class HelpRequestService
             throw new \Exception("No helper assigned");
         }
 
-    
+
         if ($request->status == 'RESOLVED') {
             throw new \Exception("Request already resolved");
         }
 
-    
+
         $resolved = $this->repo->resolveRequest($requestId, $creatorId);
 
-   
+
         if (!$resolved) {
             throw new \Exception("Resolve failed");
         }
+
 
         // Add points
 
